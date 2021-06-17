@@ -13,7 +13,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
         android:gravity="center"
-        android:text="Please Enter Your Password"
+        android:text="Please enter your password"
         android:textColor="@color/black"
         android:textSize="22sp" />
 
@@ -38,4 +38,13 @@
         android:layout_marginTop="40dp"
         android:background="@drawable/rounded_button"
         android:text="Enter"/>
+    <ImageButton
+        android:id="@+id/emergency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/emergency"
+        android:background="@color/white"
+        android:layout_below="@id/button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"/>
 </RelativeLayout>

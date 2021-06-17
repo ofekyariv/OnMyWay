@@ -38,8 +38,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import static com.example.omw.LoginActivity.latLng;
+
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapLongClickListener, LocationListener {
-    public static LatLng latLng;
     private final int FINE_LOCATION_ACCESS_REQUEST_CODE = 10001;
     private final int BACKGROUND_LOCATION_ACCESS_REQUEST_CODE = 10002;
     private final String GEO_ID = "GEOFENCE ID";
@@ -67,17 +69,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         geofencingClient = LocationServices.getGeofencingClient(this);
         geofenceHelper = new GeofenceHelper(this);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DISTANCE, this);
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DISTANCE, this); //You can also use LocationManager.GPS_PROVIDER and LocationManager.PASSIVE_PROVIDER
+        else{
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, FINE_LOCATION_ACCESS_REQUEST_CODE);
+        }
         SharedPreferences preferences = getSharedPreferences("pref", MODE_PRIVATE);
 
         editText = findViewById(R.id.rSize);
@@ -92,7 +89,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MapsActivity.this, DataActivity.class);
+                Intent intent = new Intent(MapsActivity.this, ExplanationActivity.class);
                 startActivity(intent);
             }
         });
@@ -113,7 +110,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void openMenu() {
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, DataActivity.class);
         startActivity(intent);
     }
 
@@ -180,24 +177,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, FINE_LOCATION_ACCESS_REQUEST_CODE);
         }
     }
-
+/*
+if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DISTANCE, this);
+                    mMap.setMyLocationEnabled(true);
+                }
+ */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == FINE_LOCATION_ACCESS_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 //יש אישור
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DISTANCE, this);
+                    mMap.setMyLocationEnabled(true);
                 }
-                mMap.setMyLocationEnabled(true);
             }
         }
 
@@ -255,7 +250,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            return;
+            //return;
         }
         geofencingClient.addGeofences(geofencingRequest, pendingIntent).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override

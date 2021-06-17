@@ -13,7 +13,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
         android:gravity="center"
-        android:text="Please Enter Your Phone Number"
+        android:text="Please enter parent's phone number"
         android:textColor="@color/black"
         android:textSize="22sp" />
 

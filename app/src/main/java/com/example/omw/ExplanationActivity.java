@@ -17,7 +17,7 @@ public class ExplanationActivity extends AppCompatActivity {
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ExplanationActivity.this, MapsActivity.class);
+                Intent intent = new Intent(ExplanationActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }

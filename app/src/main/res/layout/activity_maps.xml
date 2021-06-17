@@ -22,7 +22,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Parent Use"
+            android:text="Change phone number"
             android:textColor="@color/white"
             android:background="@drawable/rounded_button"
             android:layout_marginEnd="50dp"

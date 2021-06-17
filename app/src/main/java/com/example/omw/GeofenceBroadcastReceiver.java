@@ -11,8 +11,7 @@ import com.google.android.gms.location.GeofencingEvent;
 
 import java.util.List;
 
-import static com.example.omw.MapsActivity.latLng;
-
+import static com.example.omw.LoginActivity.latLng;
 
 public class GeofenceBroadcastReceiver extends BroadcastReceiver {
     private static final String TAG = "GeofenceBroadcastReceiv";
@@ -43,19 +42,14 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
         switch (transitionType) {
             case Geofence.GEOFENCE_TRANSITION_ENTER:
                 Toast.makeText(context, "GEOFENCE_TRANSITION_ENTER", Toast.LENGTH_SHORT).show();
-                notificationHelper.sendSMS("user entered zone: "+latLng.latitude+" : "+latLng.longitude);
+                notificationHelper.sendSMS("user entered zone, you can see him here: https://maps.google.com/?q="+latLng.latitude+","+latLng.longitude);
                 notificationHelper.sendHighPriorityNotification("ENTER", "", MapsActivity.class);
 
                 break;
-            //זו הודעה על שהייה כרגע לא רלוונטית אולי בהמשך אפשרות לשליחת הודעה לאחר שהייה במשך זמן מסוים
-            // case Geofence.GEOFENCE_TRANSITION_DWELL:
-            //  Toast.makeText(context, "GEOFENCE_TRANSITION_DWELL", Toast.LENGTH_SHORT).show();
-            // notificationHelper.sendSMS("user dwelling zone");
-            // notificationHelper.sendHighPriorityNotification("DWELL","", MapsActivity.class);
-            //break;
+
             case Geofence.GEOFENCE_TRANSITION_EXIT:
                 Toast.makeText(context, "GEOFENCE_TRANSITION_EXIT", Toast.LENGTH_SHORT).show();
-                notificationHelper.sendSMS("user exited zone");
+                notificationHelper.sendSMS("user exited zone"+latLng.latitude+" : "+latLng.longitude);
                 notificationHelper.sendHighPriorityNotification("EXIT", "", MapsActivity.class);
                 break;
         }
